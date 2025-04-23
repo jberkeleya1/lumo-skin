@@ -1,16 +1,11 @@
 import type { Metadata } from "next"
-import { Playfair_Display, Inter } from "next/font/google"
 import "./globals.css"
-import Navbar from "@/components/Navbar" // ✅ ensure this import path is correct
+import Navbar from "@/components/Navbar"
+import { Space_Grotesk } from "next/font/google"
 
-const playfair = Playfair_Display({
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
-  variable: "--font-display",
-})
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
+  variable: "--font-sans", // ✅ for body text
 })
 
 export const metadata: Metadata = {
@@ -25,8 +20,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${playfair.variable} ${inter.variable} font-sans antialiased bg-background text-textMain min-h-screen`}>
-        <Navbar /> {/* ✅ This appears globally on all routes */}
+      <body className={`${spaceGrotesk.variable} font-sans bg-background text-textMain`}>
+        <Navbar />
         <main className="min-h-screen">
           {children}
         </main>

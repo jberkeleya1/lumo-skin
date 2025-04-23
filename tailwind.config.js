@@ -6,16 +6,19 @@ module.exports = {
   ],
   theme: {
     extend: {
-      colors: {
-        background: "#FAF6EF",
-        card: "#FFFFFF",
-        borderColor: "#E3DDD3",
-        primary: "#D4CBB6",           // button background
-        primaryText: "#3B3B3B",       // button text
-        textMain: "#2E2E2E",
-        textMuted: "#6B6B6B",
+      fontFamily: {
+        sans: ["var(--font-sans)", "Space Grotesk", "sans-serif"],   // Primary font
+        accent: ["var(--font-accent)", "Satoshi", "sans-serif"],      // Accent font
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities, theme }) {
+      addUtilities({
+        '.font-accent': {
+          fontFamily: theme('fontFamily.accent').join(', '),
+        }
+      })
+    }
+  ]
 }
