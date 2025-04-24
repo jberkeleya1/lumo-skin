@@ -1,3 +1,7 @@
+"use client";
+
+
+import { useEffect, useState } from "react";
 import IconChecklist from "@/components/design/IconChecklist";
 import IconShoppingBag from "@/components/design/IconShoppingBag";
 import IconUserPlus from "@/components/design/IconUserPlus";
@@ -5,9 +9,24 @@ import IconFlask from "@/components/design/IconFlask";
 import IconHeart from "@/components/design/IconHeart";
 import IconBarChart from "@/components/design/IconBarChart";
 import { UserRound, Sparkles } from "lucide-react";
-
+import { useCTA } from "@/hooks/useCTA";
+import { supabase } from "@/lib/supabaseClient";
 
 export default function HomePage() {
+  const [user, setUser] = useState<{ email: string } | null>(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data } = await supabase.auth.getUser();
+      if (data.user) {
+        setUser({ email: data.user.email! });
+      }
+    };
+    fetchUser();
+  }, []);
+
+  const { ctaText, logClick } = useCTA(user?.email ?? null);
+
   return (
     <main className="min-h-screen bg-[#fef9f1] text-[#1e1e1e] font-sans">
       {/* Hero Section */}
@@ -21,6 +40,7 @@ export default function HomePage() {
           </p>
           <a
             href="#start"
+            onClick={logClick}
             className="btn inline-flex items-center gap-3 bg-primary text-white hover:text-white px-8 py-4 rounded-lg font-medium text-base hover:opacity-90 transition"
           >
             <div className="relative">
@@ -30,7 +50,7 @@ export default function HomePage() {
                 className="absolute -top-2 -right-2 text-white opacity-90"
               />
             </div>
-            Get My Routine
+            {ctaText}
           </a>
         </div>
 
@@ -122,6 +142,7 @@ export default function HomePage() {
           </h2>
           <a
             href="/"
+            onClick={logClick}
             className="btn inline-flex items-center gap-3 bg-primary text-white px-6 py-3 rounded-lg font-medium text-base hover:opacity-90 transition"
           >
             <div className="relative">
@@ -131,7 +152,7 @@ export default function HomePage() {
                 className="absolute -top-1.5 -right-1 text-white opacity-90"
               />
             </div>
-            Start Now
+            {ctaText}
           </a>
         </div>
       </section>
